@@ -15,7 +15,13 @@ final class HeaderOptions extends StrategyOptions {
 
 }
 
-class HeaderStrategy implements Strategy<HeaderOptions> {
+class HeaderResult {
+  final bool authenticated;
+
+  HeaderResult({required this.authenticated});
+}
+
+class HeaderStrategy implements Strategy<HeaderOptions, bool> {
 
   @override
   String get name => 'Header';
@@ -36,7 +42,7 @@ void main() {
         frontier.use(HeaderStrategy());
         final headers = <String, dynamic>{};
         headers['auth'] = 'admin';
-        final authenticated = await frontier.authenticate(
+        final authenticated = await frontier.authenticate<HeaderOptions, bool>(
           HeaderOptions(key: 'auth', value: 'admin', headers: headers),
         );
         expect(authenticated, true);
@@ -47,7 +53,7 @@ void main() {
         frontier.use(HeaderStrategy());
         final headers = <String, dynamic>{};
         headers['auth'] = 'user';
-        final authenticated = await frontier.authenticate(
+        final authenticated = await frontier.authenticate<HeaderOptions, bool>(
           HeaderOptions(key: 'auth', value: 'admin', headers: headers),
         );
         expect(authenticated, false);

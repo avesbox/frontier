@@ -15,7 +15,7 @@ final class HeaderOptions extends StrategyOptions {
 
 }
 
-class HeaderStrategy implements Strategy<HeaderOptions> {
+class HeaderStrategy implements Strategy<HeaderOptions, bool> {
 
   @override
   String get name => 'Header';

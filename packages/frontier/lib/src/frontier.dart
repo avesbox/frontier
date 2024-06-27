@@ -6,18 +6,15 @@ class Frontier {
 
   Frontier();
 
-  void use<T extends StrategyOptions>(Strategy<T> strategy) {
+  void use<T extends StrategyOptions, R>(Strategy<T, R> strategy) {
     if(_strategy != null){
       throw Exception('Strategy already defined');
     }
     _strategy = strategy;
   }
 
-  Future<bool> authenticate<T extends StrategyOptions>(T options) async {
-    if(_strategy == null) {
-      return true;
-    }
-    return await _strategy?.authenticate(options) ?? false;
+  Future<R> authenticate<T extends StrategyOptions, R>(T options) async {
+    return (await _strategy?.authenticate(options)) as R;
   }
 
 }
