@@ -9,4 +9,5 @@ abstract interface class Strategy<T extends StrategyOptions, R> {
   Future<R> authenticate(T options);
 }
 
+/// Base class to extend for creating options for a strategy
 abstract class StrategyOptions {}
