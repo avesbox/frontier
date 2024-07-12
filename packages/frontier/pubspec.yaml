@@ -1,14 +1,19 @@
 name: frontier
-description: A sample command-line application.
-version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+description: Create your own authentication and authorization strategies for your web application.
+version: 0.0.1
+repository: https://github.com/serinus-nest/frontier
+topic: 
+  - authentication
+  - authorization
+  - backend
+  - web
+  - http
 
 environment:
-  sdk: ^3.3.3
+  sdk: '>=3.0.0 <4.0.0'
 
-# Add regular dependencies here.
 dependencies:
-  frontier_strategy: 1.0.0
+  frontier_strategy: 0.0.1
 
 dev_dependencies:
   lints: ^3.0.0

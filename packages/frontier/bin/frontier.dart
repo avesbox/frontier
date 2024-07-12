@@ -2,21 +2,15 @@ import 'package:frontier/frontier.dart';
 import 'dart:io';
 
 final class HeaderOptions extends StrategyOptions {
-
   final String key;
   final String value;
   final Map<String, dynamic> headers;
 
-  HeaderOptions({
-    required this.key,
-    required this.value,
-    required this.headers
-  });
-
+  HeaderOptions(
+      {required this.key, required this.value, required this.headers});
 }
 
 class HeaderStrategy implements Strategy<HeaderOptions, bool> {
-
   @override
   String get name => 'Header';
 
@@ -24,9 +18,7 @@ class HeaderStrategy implements Strategy<HeaderOptions, bool> {
   Future<bool> authenticate(HeaderOptions options) async {
     return options.headers[options.key] == options.value;
   }
-  
 }
-
 
 void main(List<String> arguments) {
   Frontier frontier = Frontier();
@@ -37,8 +29,11 @@ void main(List<String> arguments) {
       request.headers.forEach((key, values) {
         headers[key] = values.join(',');
       });
-      frontier.authenticate(HeaderOptions(key: 'auth', value: 'admin', headers: headers)).then((authenticated) {
-        if(authenticated) {
+      frontier
+          .authenticate(
+              HeaderOptions(key: 'auth', value: 'admin', headers: headers))
+          .then((authenticated) {
+        if (authenticated) {
           request.response.write('Authenticated');
         } else {
           request.response.statusCode = HttpStatus.unauthorized;
@@ -48,5 +43,4 @@ void main(List<String> arguments) {
       });
     });
   });
-
 }
