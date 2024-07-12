@@ -2,7 +2,7 @@ name: frontier
 description: Create your own authentication and authorization strategies for your web application.
 version: 0.0.1
 repository: https://github.com/serinus-nest/frontier
-topic: 
+topics: 
   - authentication
   - authorization
   - backend
