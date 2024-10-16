@@ -4,25 +4,30 @@ import 'dart:io';
 final class HeaderOptions extends StrategyOptions {
   final String key;
   final String value;
-  final Map<String, dynamic> headers;
 
   HeaderOptions(
-      {required this.key, required this.value, required this.headers});
+      {required this.key, required this.value});
 }
 
-class HeaderStrategy implements Strategy<HeaderOptions, bool> {
+class HeaderStrategy implements Strategy<HeaderOptions, Map<String, dynamic>, bool> {
+
+  const HeaderStrategy(this.options);
+
   @override
   String get name => 'Header';
 
   @override
-  Future<bool> authenticate(HeaderOptions options) async {
-    return options.headers[options.key] == options.value;
+  Future<bool> authenticate(Map<String, dynamic> headers) async {
+    return headers[options.key] == options.value;
   }
+  
+  @override
+  final HeaderOptions options;
 }
 
 void main(List<String> arguments) {
   Frontier frontier = Frontier();
-  frontier.use(HeaderStrategy());
+  frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin')));
   HttpServer.bind(InternetAddress.loopbackIPv4, 8080).then((server) {
     server.listen((HttpRequest request) {
       final headers = <String, dynamic>{};
@@ -31,8 +36,8 @@ void main(List<String> arguments) {
       });
       frontier
           .authenticate(
-              HeaderOptions(key: 'auth', value: 'admin', headers: headers))
-          .then((authenticated) {
+              headers
+          ).then((authenticated) {
         if (authenticated) {
           request.response.write('Authenticated');
         } else {

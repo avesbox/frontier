@@ -4,10 +4,9 @@ import 'package:test/test.dart';
 final class HeaderOptions extends StrategyOptions {
   final String key;
   final String value;
-  final Map<String, dynamic> headers;
 
   HeaderOptions(
-      {required this.key, required this.value, required this.headers});
+      {required this.key, required this.value});
 }
 
 class HeaderResult {
@@ -16,37 +15,41 @@ class HeaderResult {
   HeaderResult({required this.authenticated});
 }
 
-class HeaderStrategy implements Strategy<HeaderOptions, bool> {
+class HeaderStrategy implements Strategy<HeaderOptions, Map<String, dynamic>, bool> {
+
+  const HeaderStrategy(this.options);
+
   @override
   String get name => 'Header';
 
   @override
-  Future<bool> authenticate(HeaderOptions options) async {
-    return options.headers[options.key] == options.value;
+  Future<bool> authenticate(Map<String, dynamic> headers) async {
+    return headers[options.key] == options.value;
   }
+  
+  @override
+  final HeaderOptions options;
 }
 
 void main() {
   group('$Frontier', () {
     test('should authenticate with HeaderStrategy', () async {
       final frontier = Frontier();
-      frontier.use(HeaderStrategy());
+      frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin')));
       final headers = <String, dynamic>{};
       headers['auth'] = 'admin';
-      final authenticated = await frontier.authenticate<HeaderOptions, bool>(
-        HeaderOptions(key: 'auth', value: 'admin', headers: headers),
+      final authenticated = await frontier.authenticate<HeaderOptions, Map<String, dynamic>, bool>(
+        headers
       );
       expect(authenticated, true);
     });
 
     test('should not authenticate with HeaderStrategy', () async {
       final frontier = Frontier();
-      frontier.use(HeaderStrategy());
+      frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin')));
       final headers = <String, dynamic>{};
       headers['auth'] = 'user';
-      final authenticated = await frontier.authenticate<HeaderOptions, bool>(
-        HeaderOptions(key: 'auth', value: 'admin', headers: headers),
-      );
+      final authenticated = await frontier.authenticate<HeaderOptions, Map<String, dynamic>, bool>(headers);
       expect(authenticated, false);
     });
   });
