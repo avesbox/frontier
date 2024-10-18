@@ -6,10 +6,9 @@ void main() {
     final credentials = Credentials(username: 'test', password: 'test');
     final options = BasicAuthOptions(
       credentials: credentials,
-      headers: {'Authorization': 'dGVzdDp0ZXN0'},
     );
-    final strategy = BasicAuthStrategy();
+    final strategy = BasicAuthStrategy(options);
     expect(strategy.name, 'BasicAuthentication');
-    expect(strategy.authenticate(options), true);
+    expect(strategy.authenticate({'Authorization': 'dGVzdDp0ZXN0'}), true);
   });
 }
