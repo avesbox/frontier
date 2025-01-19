@@ -14,7 +14,15 @@ class JwtStrategy implements Strategy<JwtStrategyOptions, String, JWT> {
   Future<JWT> authenticate(String token) async {
     return JWT.verify(
       token, 
-      options.secret
+      options.secret,
+      issuer: options.issuer,
+      issueAt: options.issueAt,
+      subject: options.subject,
+      audience: options.audience,
+      checkExpiresIn: options.checkExpiresIn,
+      checkNotBefore: options.checkNotBefore,
+      checkHeaderType: options.checkHeaderType,
+      jwtId: options.jwtId
     );
   }
 
