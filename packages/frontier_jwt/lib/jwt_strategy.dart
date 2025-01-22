@@ -3,7 +3,7 @@ library frontier_jwt;
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:frontier_strategy/frontier_strategy.dart';
 
-class JwtStrategy implements Strategy<JwtStrategyOptions, String, JWT> {
+class JwtStrategy implements Strategy<JwtStrategyOptions, String, JWT?> {
 
   const JwtStrategy(this.options);
 
@@ -11,7 +11,10 @@ class JwtStrategy implements Strategy<JwtStrategyOptions, String, JWT> {
   String get name => 'jwt';
 
   @override
-  Future<JWT> authenticate(String token) async {
+  Future<JWT?> authenticate([String? token]) async {
+    if(token == null) {
+      return null;
+    }
     return JWT.verify(
       token, 
       options.secret,
