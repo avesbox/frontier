@@ -23,7 +23,7 @@ void main() {
       expect(strategy.authenticate(token), throwsA(isA<JWTException>()));
     });
 
-    test('test parse headeer', () {
+    test('should parse header and return the schema and the value of the header', () {
       final r = parseHeader('Bearer token');
       expect(r?.value, 'token');
       expect(r?.schema, 'Bearer');

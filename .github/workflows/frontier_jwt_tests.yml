@@ -31,4 +31,4 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@v2
         with:
           path: ./packages/frontier_jwt/coverage/lcov.info
-          min_coverage: 0
+          min_coverage: 80
