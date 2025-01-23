@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:frontier/frontier.dart';
 import 'package:test/test.dart';
 
@@ -38,10 +40,14 @@ void main() {
       frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin')));
       final headers = <String, dynamic>{};
       headers['auth'] = 'admin';
-      final authenticated = await frontier.authenticate<HeaderOptions, Map<String, dynamic>, bool>(
-        headers
+      final value = await frontier.authenticate(
+        'Header',
+        headers,
+        (options, result) async {
+          return result;
+        }
       );
-      expect(authenticated, true);
+      expect(value, true);
     });
 
     test('should not authenticate with HeaderStrategy', () async {
@@ -49,7 +55,9 @@ void main() {
       frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin')));
       final headers = <String, dynamic>{};
       headers['auth'] = 'user';
-      final authenticated = await frontier.authenticate<HeaderOptions, Map<String, dynamic>, bool>(headers);
+      final authenticated = await frontier.authenticate('Header', headers, (options, result) async {
+        return result;
+      });
       expect(authenticated, false);
     });
   });

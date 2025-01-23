@@ -1,5 +1,6 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:frontier_jwt/extract_jwt.dart';
+import 'package:frontier_strategy/frontier_strategy.dart';
 import 'package:test/test.dart';
 import 'package:frontier_jwt/jwt_strategy.dart';
 
@@ -27,6 +28,45 @@ void main() {
       final r = parseHeader('Bearer token');
       expect(r?.value, 'token');
       expect(r?.schema, 'Bearer');
+    });
+
+    test('should return the value of the bearer header', () {
+      final value = ExtractJwt.fromAuthHeaderAsBearerToken()(
+        StrategyRequest(headers: {'authorization': 'Bearer token'})
+      );
+      expect(value, 'token');
+      final value2 = ExtractJwt.fromAuthSchema('bearer')(
+        StrategyRequest(headers: {'authorization': 'Bearer token'})
+      );
+      expect(value2, 'token');
+    });
+
+    test('should return the value of the header', () {
+      final value = ExtractJwt.fromHeaders('authorization')(
+        StrategyRequest(headers: {'authorization': 'Bearer token'})
+      );
+      expect(value, 'Bearer token');
+    });
+
+    test('should return the value of the query param', () {
+      final value = ExtractJwt.fromQueryParams('token')(
+        StrategyRequest(query: {'token': 'hello'})
+      );
+      expect(value, 'hello');
+    });
+
+    test('should return the value of the body param', () {
+      final value = ExtractJwt.fromBody('token')(
+        StrategyRequest(body: {'token': 'hello'})
+      );
+      expect(value, 'hello');
+    });
+
+    test('should return the value of the cookie', () {
+      final value = ExtractJwt.fromCookies('token')(
+        StrategyRequest(cookies: {'token': 'hello'})
+      );
+      expect(value, 'hello');
     });
   });
 }

@@ -36,16 +36,18 @@ void main(List<String> arguments) {
       });
       frontier
           .authenticate(
-              headers
-          ).then((authenticated) {
-        if (authenticated) {
-          request.response.write('Authenticated');
-        } else {
-          request.response.statusCode = HttpStatus.unauthorized;
-          request.response.write('Not Authenticated');
-        }
-        request.response.close();
-      });
+            'Header',
+              headers,
+            (options, result) async {
+              if (result) {
+                request.response.write('Authenticated');
+              } else {
+                request.response.statusCode = HttpStatus.unauthorized;
+                request.response.write('Not Authenticated');
+              }
+              request.response.close();
+            }
+          );
     });
   });
 }

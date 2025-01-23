@@ -14,6 +14,8 @@ abstract interface class Strategy<T extends StrategyOptions, I, R> {
   Future<R> authenticate(I data);
 }
 
+typedef StrategyCallback<T, I> = Future<dynamic> Function(T strategyOptions, I? data);
+
 /// Base class to extend for creating options for a strategy
 abstract class StrategyOptions {}
 
@@ -31,10 +33,10 @@ final class StrategyRequest {
   final Map<String, String> cookies;
 
   const StrategyRequest({
-    required this.headers,
-    required this.query,
-    required this.body,
-    required this.cookies,
+    this.headers = const {},
+    this.query = const {},
+    this.body,
+    this.cookies = const {},
   });
 
 }

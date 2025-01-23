@@ -40,7 +40,7 @@ class ExtractJwt {
     };
   }
 
-  static String? Function(StrategyRequest request) fromAuthHeaderAsBearerToken(Map<String, String> headers) {
+  static String? Function(StrategyRequest request) fromAuthHeaderAsBearerToken() {
     return fromAuthSchema('bearer');
   }
 

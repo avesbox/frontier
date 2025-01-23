@@ -14,24 +14,26 @@ import 'package:frontier_strategy/frontier_strategy.dart';
 /// ```
 /// 
 class Frontier {
-  Strategy? _strategy;
+  final Map<String, Strategy> _strategy = {};
 
   /// Create a new instance of Frontier.
   Frontier();
 
   /// Define a strategy to be used. If a strategy is already defined, an exception is thrown.
   void use<T extends StrategyOptions, I, R>(Strategy<T, I, R> strategy) {
-    if (_strategy != null) {
+    if (_strategy.containsKey(strategy.name)) {
       throw Exception('Strategy already defined');
     }
-    _strategy = strategy;
+    _strategy[strategy.name] = strategy;
   }
 
   /// Authenticate using the defined strategy. If no strategy is defined, an exception is thrown.
-  Future<R> authenticate<T extends StrategyOptions, I, R>(I input) async {
-    if (_strategy == null) {
+  Future<dynamic> authenticate<T extends StrategyOptions, I>(String strategy, I input, StrategyCallback<T, dynamic> callback) async {
+    if (!_strategy.containsKey(strategy)) {
       throw Exception('No strategy defined');
     }
-    return (await _strategy?.authenticate(input)) as R;
+    final s = _strategy[strategy];
+    final result = await s?.authenticate(input);
+    return await callback(s!.options as T, result);
   }
 }
