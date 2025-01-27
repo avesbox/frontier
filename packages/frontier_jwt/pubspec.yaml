@@ -1,15 +1,20 @@
 name: frontier_jwt
-description: A sample command-line application.
+description: Strategy for Frontier that uses JWT for authentication.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/avesbox/frontier
+topics: 
+  - authentication
+  - authorization
+  - backend
+  - jwt
+  - http
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
 
-# Add regular dependencies here.
 dependencies:
   dart_jsonwebtoken: ^2.14.1
-  frontier_strategy: ^0.0.1
+  frontier_strategy: ^1.0.0
 
 dev_dependencies:
   lints: ^4.0.0

@@ -1,7 +1,7 @@
 name: frontier
 description: Create your own authentication and authorization strategies for your web application.
-version: 0.0.1
-repository: https://github.com/serinus-nest/frontier
+version: 0.0.2
+repository: https://github.com/avesbox/frontier
 topics: 
   - authentication
   - authorization
@@ -10,11 +10,11 @@ topics:
   - http
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 
 dependencies:
-  frontier_strategy: 0.0.1
+  frontier_strategy: ^1.0.0
 
 dev_dependencies:
-  lints: ^3.0.0
+  lints: ^5.0.0
   test: ^1.24.0

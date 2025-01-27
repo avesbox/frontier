@@ -1,15 +1,19 @@
 name: frontier_basic
-description: A sample command-line application.
+description: Strategy for Frontier that uses basic authentication.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/avesbox/frontier
+topics: 
+  - authentication
+  - authorization
+  - backend
+  - basic
+  - http
 
 environment:
-  sdk: ^3.4.3
+  sdk: '>=3.5.0 <4.0.0'
 
-# Add regular dependencies here.
 dependencies:
-  frontier_strategy: ^0.0.1
-  # path: ^1.8.0
+  frontier_strategy: ^1.0.0
 
 dev_dependencies:
   lints: ^3.0.0

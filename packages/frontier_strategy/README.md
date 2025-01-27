@@ -1,5 +1,7 @@
-# Frontier
+![Frontier Banner](https://github.com/francescovallone/frontier/raw/main/assets/github-header.png)
 
-Frontier is a simple, flexible and unobtrusive authentication library for Dart.
+# Frontier Strategy
 
-It exposes different strategies for authenticating users, such as email/password, OAuth, etc.
+Frontier Strategy exposes the interfaces that you need to implement to create a new authentication strategy for Frontier.
+
+[Get Started](https://frontier.avesbox.com/custom.html) | [Pub.dev](https://pub.dev/packages/frontier_basic)
