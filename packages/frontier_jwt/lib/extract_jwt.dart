@@ -2,6 +2,8 @@ import 'package:frontier_strategy/frontier_strategy.dart';
 
 const authHeader = 'Authorization';
 
+typedef ExtractJwtFunction = String? Function(StrategyRequest request);
+
 class ExtractJwt {
 
   static String? Function(StrategyRequest request) fromHeaders(String headerName) {

@@ -8,7 +8,7 @@ void main() {
   group('$JwtStrategy', () {
     test('should have a name of jwt', () {
       final strategy = JwtStrategy(JwtStrategyOptions(
-        SecretKey('')), (options, jwt, done) async {
+        SecretKey(''), jwtFromRequest: ExtractJwt.fromHeaders('auth')), (options, jwt, done) async {
           done(jwt);
         });
       expect(strategy.name, 'jwt');
@@ -16,24 +16,34 @@ void main() {
 
     test('should authenticate a token', () async {
       final strategy = JwtStrategy(JwtStrategyOptions(
-        SecretKey('hello')
+        SecretKey('hello'),
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
       ), (options, jwt, done) async {
           done(jwt);
         });
       final token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.ElsKKULlzGtesThefMuj2_a6KIY9L5i2zDrBLHV-e0M';
-      strategy.authenticate(token);
+      strategy.authenticate(
+        StrategyRequest(headers: {
+          'Authorization': 'Bearer $token'
+        })
+      );
       final jwt = await strategy.done.future;
       expect(jwt, isA<JWT>());
     });
 
     test('should throw an error if the token is invalid', () async {
       final strategy = JwtStrategy(JwtStrategyOptions(
-        SecretKey('hallo')
+        SecretKey('hallo'),
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
       ), (options, jwt, done) async {
           done(jwt);
         });
       final token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.ElsKKULlzGtesThefMuj2_a6KIY9L5i2zDrBLHV-e0M';
-      strategy.authenticate(token);
+      strategy.authenticate(
+        StrategyRequest(headers: {
+          'Authorization': 'Bearer $token'
+        })
+      );
       final result = await strategy.done.future;
       expect(result, isA<JWTException>());
     });

@@ -3,7 +3,9 @@ library frontier_jwt;
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:frontier_strategy/frontier_strategy.dart';
 
-class JwtStrategy extends Strategy<JwtStrategyOptions, String> {
+import 'extract_jwt.dart';
+
+class JwtStrategy extends Strategy<JwtStrategyOptions, StrategyRequest> {
 
   JwtStrategy(super.options, super.callback);
 
@@ -11,14 +13,19 @@ class JwtStrategy extends Strategy<JwtStrategyOptions, String> {
   String get name => 'jwt';
 
   @override
-  Future<void> authenticate(String? data) async {
+  Future<void> authenticate(StrategyRequest? data) async {
     if(data == null) {
       done.complete(null);
       return;
     }
     try {
+      final jwtString = options.jwtFromRequest(data);
+      if(jwtString == null) {
+        done.complete(null);
+        return;
+      }
       final jwt = JWT.verify(
-        data, 
+        jwtString, 
         options.secret,
         checkNotBefore: options.checkNotBefore,
         checkExpiresIn: options.checkExpiresIn,
@@ -46,6 +53,7 @@ class JwtStrategyOptions extends StrategyOptions {
   /// - ECPublicKey with ECDSA algorithm
   /// - EdDSAPublicKey with EdDSA algorithm
   final JWTKey secret;
+  final ExtractJwtFunction jwtFromRequest;
   final bool checkNotBefore;
   final bool checkExpiresIn;
   final bool checkHeaderType;
@@ -56,7 +64,9 @@ class JwtStrategyOptions extends StrategyOptions {
   final String? jwtId;
 
   JwtStrategyOptions(
-    this.secret,{
+    this.secret,
+  {
+    required this.jwtFromRequest,
     this.checkNotBefore = true,
     this.checkExpiresIn = true,
     this.checkHeaderType = true,
