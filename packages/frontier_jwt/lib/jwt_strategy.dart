@@ -3,34 +3,37 @@ library frontier_jwt;
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:frontier_strategy/frontier_strategy.dart';
 
-class JwtStrategy implements Strategy<JwtStrategyOptions, String, JWT?> {
+class JwtStrategy extends Strategy<JwtStrategyOptions, String> {
 
-  const JwtStrategy(this.options);
+  JwtStrategy(super.options, super.callback);
 
   @override
   String get name => 'jwt';
 
   @override
-  Future<JWT?> authenticate([String? token]) async {
-    if(token == null) {
-      return null;
+  Future<void> authenticate(String? data) async {
+    if(data == null) {
+      done.complete(null);
+      return;
     }
-    return JWT.verify(
-      token, 
-      options.secret,
-      issuer: options.issuer,
-      issueAt: options.issueAt,
-      subject: options.subject,
-      audience: options.audience,
-      checkExpiresIn: options.checkExpiresIn,
-      checkNotBefore: options.checkNotBefore,
-      checkHeaderType: options.checkHeaderType,
-      jwtId: options.jwtId
-    );
+    try {
+      final jwt = JWT.verify(
+        data, 
+        options.secret,
+        checkNotBefore: options.checkNotBefore,
+        checkExpiresIn: options.checkExpiresIn,
+        checkHeaderType: options.checkHeaderType,
+        issuer: options.issuer,
+        subject: options.subject,
+        audience: options.audience,
+        jwtId: options.jwtId,
+        issueAt: options.issueAt
+      );
+      callback.call(options, jwt, done.complete);
+    } catch(e) {
+      done.complete(e);
+    }
   }
-
-  @override
-  final JwtStrategyOptions options;
 
 }
 
@@ -52,8 +55,8 @@ class JwtStrategyOptions extends StrategyOptions {
   final String? issuer;
   final String? jwtId;
 
-  JwtStrategyOptions({
-    required this.secret,
+  JwtStrategyOptions(
+    this.secret,{
     this.checkNotBefore = true,
     this.checkExpiresIn = true,
     this.checkHeaderType = true,

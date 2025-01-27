@@ -140,7 +140,7 @@ packages:
       path: "../frontier_strategy"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.2"
   glob:
     dependency: transitive
     description:

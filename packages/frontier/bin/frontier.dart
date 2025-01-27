@@ -9,25 +9,24 @@ final class HeaderOptions extends StrategyOptions {
       {required this.key, required this.value});
 }
 
-class HeaderStrategy implements Strategy<HeaderOptions, Map<String, dynamic>, bool> {
+class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
 
-  const HeaderStrategy(this.options);
+  HeaderStrategy(super.options, super.callback);
 
   @override
   String get name => 'Header';
 
   @override
-  Future<bool> authenticate(Map<String, dynamic> headers) async {
-    return headers[options.key] == options.value;
+  Future<void> authenticate(Map<String, dynamic> headers) async {
+    return callback.call(options, headers[options.key] == options.value, done.complete);
   }
-  
-  @override
-  final HeaderOptions options;
 }
 
 void main(List<String> arguments) {
   Frontier frontier = Frontier();
-  frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin')));
+  frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin'), (options, result, done) async {
+              done(result);
+            }));
   HttpServer.bind(InternetAddress.loopbackIPv4, 8080).then((server) {
     server.listen((HttpRequest request) {
       final headers = <String, dynamic>{};
@@ -38,15 +37,6 @@ void main(List<String> arguments) {
           .authenticate(
             'Header',
               headers,
-            (options, result) async {
-              if (result) {
-                request.response.write('Authenticated');
-              } else {
-                request.response.statusCode = HttpStatus.unauthorized;
-                request.response.write('Not Authenticated');
-              }
-              request.response.close();
-            }
           );
     });
   });

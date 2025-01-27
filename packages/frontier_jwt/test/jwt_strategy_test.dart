@@ -7,21 +7,35 @@ import 'package:frontier_jwt/jwt_strategy.dart';
 void main() {
   group('$JwtStrategy', () {
     test('should have a name of jwt', () {
-      final strategy = JwtStrategy(JwtStrategyOptions(secret: SecretKey('')));
+      final strategy = JwtStrategy(JwtStrategyOptions(
+        SecretKey('')), (options, jwt, done) async {
+          done(jwt);
+        });
       expect(strategy.name, 'jwt');
     });
 
     test('should authenticate a token', () async {
-      final strategy = JwtStrategy(JwtStrategyOptions(secret: SecretKey('hello')));
+      final strategy = JwtStrategy(JwtStrategyOptions(
+        SecretKey('hello')
+      ), (options, jwt, done) async {
+          done(jwt);
+        });
       final token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.ElsKKULlzGtesThefMuj2_a6KIY9L5i2zDrBLHV-e0M';
-      final jwt = await strategy.authenticate(token);
+      strategy.authenticate(token);
+      final jwt = await strategy.done.future;
       expect(jwt, isA<JWT>());
     });
 
     test('should throw an error if the token is invalid', () async {
-      final strategy = JwtStrategy(JwtStrategyOptions(secret: SecretKey('hella')));
+      final strategy = JwtStrategy(JwtStrategyOptions(
+        SecretKey('hallo')
+      ), (options, jwt, done) async {
+          done(jwt);
+        });
       final token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.ElsKKULlzGtesThefMuj2_a6KIY9L5i2zDrBLHV-e0M';
-      expect(strategy.authenticate(token), throwsA(isA<JWTException>()));
+      strategy.authenticate(token);
+      final result = await strategy.done.future;
+      expect(result, isA<JWTException>());
     });
 
     test('should parse header and return the schema and the value of the header', () {

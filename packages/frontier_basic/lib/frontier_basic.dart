@@ -16,14 +16,12 @@ final class BasicAuthOptions extends StrategyOptions {
   /// By default this is set to 'Proxy-Authorization', but can be changed
   final String proxyHeader;
 
-  /// The credentials to compare against
-  final Credentials credentials;
-
-  BasicAuthOptions({
-    required this.credentials,
-    this.header = 'Authorization',
-    this.proxyHeader = 'Proxy-Authorization',
-  });
+  BasicAuthOptions(
+    {
+      this.header = 'Authorization',
+      this.proxyHeader = 'Proxy-Authorization',
+    }
+  );
 
 }
 
@@ -32,36 +30,45 @@ final class Credentials {
   final String password;
 
   Credentials({required this.username, required this.password});
-}
-
-class BasicAuthStrategy implements Strategy<BasicAuthOptions, Map<String, dynamic>, bool> {
 
   @override
-  final BasicAuthOptions options;
+  bool operator ==(Object other) {
+    return other is Credentials && other.username == username && other.password == password;
+  }
 
-  BasicAuthStrategy(this.options);
+  @override
+  int get hashCode => username.hashCode ^ password.hashCode;
+}
+
+class BasicAuthStrategy extends Strategy<BasicAuthOptions, Map<String, dynamic>> {
+
+  BasicAuthStrategy(super.options, super.callback);
 
   @override
   String get name => 'BasicAuthentication';
 
   @override
-  Future<bool> authenticate(Map<String, dynamic> headers) async {
-    if(headers.containsKey(options.header)) {
-      return _decode(headers[options.header]!, options.credentials);
-    } else if(headers.containsKey(options.proxyHeader)) {
-      return _decode(headers[options.proxyHeader]!, options.credentials);
-    } else {
-      return false;
+  Future<void> authenticate(Map<String, dynamic> data) async {
+    Credentials? credentials;
+    if(data.containsKey(options.header)) {
+      credentials = _decode(data[options.header]!);
+    } else if(data.containsKey(options.proxyHeader)) {
+      credentials = _decode(data[options.proxyHeader]!);
     }
+    if(credentials != null) {
+      callback.call(options, credentials, done.complete);
+      return;
+    }
+    done.complete(credentials);
   }
 
-  bool _decode(String value, Credentials credentials) {
+  Credentials? _decode(String value) {
     final decoded = utf8.decode(base64.decode(value));
     final parts = decoded.split(':');
     if(parts.length != 2) {
-      return false;
+      return null;
     }
-    return parts[0] == credentials.username && parts[1] == credentials.password;
+    return Credentials(username: parts[0], password: parts[1]);
   }
   
 }

@@ -1,20 +1,26 @@
-library frontier_strategy;
+import 'dart:async';
 
 /// Base class to extend for creating a new strategy
-abstract interface class Strategy<T extends StrategyOptions, I, R> {
+abstract class Strategy<T extends StrategyOptions, I> {
 
   final T options;
+  final StrategyCallback<T, Object> callback;
 
-  Strategy(this.options);
+  Strategy(
+    this.options, 
+    this.callback,
+  );
+
+  Completer done = Completer<Object?>();
 
   /// Name of the strategy
   String get name;
 
   /// Authenticate the request
-  Future<R> authenticate(I data);
+  Future<void> authenticate(I data);
 }
 
-typedef StrategyCallback<T, I> = Future<dynamic> Function(T strategyOptions, I? data);
+typedef StrategyCallback<T, I> = Future<void> Function(T strategyOptions, I? data, void Function(Object? result) done);
 
 /// Base class to extend for creating options for a strategy
 abstract class StrategyOptions {}

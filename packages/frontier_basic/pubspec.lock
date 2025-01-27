@@ -100,7 +100,7 @@ packages:
       path: "../frontier_strategy"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.2"
   glob:
     dependency: transitive
     description:
@@ -406,4 +406,4 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.4.3 <4.0.0"
+  dart: ">=3.5.0 <4.0.0"
