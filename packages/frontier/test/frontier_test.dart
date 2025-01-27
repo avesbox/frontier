@@ -25,8 +25,8 @@ class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
   String get name => 'Header';
 
   @override
-  Future<bool> authenticate(Map<String, dynamic> headers) async {
-    return headers[options.key] == options.value;
+  Future<void> authenticate(Map<String, dynamic> headers) async {
+    callback.call(options, headers[options.key] == options.value, done.complete);
   }
   
 }
