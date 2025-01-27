@@ -1,6 +1,6 @@
 import 'package:frontier_strategy/frontier_strategy.dart';
 
-const authHeader = 'authorization';
+const authHeader = 'Authorization';
 
 class ExtractJwt {
 
@@ -28,7 +28,7 @@ class ExtractJwt {
   static String? Function(StrategyRequest request) fromAuthSchema(String schema) {
     final schemaLower = schema.toLowerCase();
     return (request) {
-      final header = request.headers[authHeader];
+      final header = request.headers[authHeader] ?? request.headers[authHeader.toLowerCase()];
       if(header == null) {
         return null;
       }
