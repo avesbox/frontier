@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:frontier_strategy/frontier_strategy.dart';
 
 /// The main class of the library. It is used to define and use strategies.
@@ -33,6 +35,7 @@ class Frontier {
       throw Exception('No strategy defined');
     }
     final s = _strategy[strategy];
+    s?.done = Completer<Object?>();
     await s?.authenticate(input);
     return s?.done.future;
   }
