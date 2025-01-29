@@ -34,23 +34,23 @@ void main() {
         done(result);
       }));
     });
-    test('test if the middleware goes through', () async {
+    test('when the header value in the request is correct it should pass through the middleware', () async {
       var handler = const Pipeline()
         .addMiddleware(frontierMiddleware('Header', (req) async => req.headers))
-        .addHandler((req) => Response.ok('ok!'));
-
-      final response = await handler(Request(
+        .addHandler((req) => Response.ok('ok!', context: req.context));
+      final req = Request(
         'get', 
         clientUri,
         headers: {
           'hello': 'world'
         }
-      ));
-
+      );
+      final response = await handler(req);
+      expect(response.context['frontier.Header'], equals(true));
       expect(response.statusCode, 200);
     });
 
-    test('test if the middleware should not go through', () async {
+    test('when the header value in the request is not correct it should not pass through the middleware', () async {
       var handler = const Pipeline()
         .addMiddleware(frontierMiddleware('Header', (req) async => req.headers))
         .addHandler((req) => Response.ok('ok!'));
@@ -66,7 +66,7 @@ void main() {
       expect(response.statusCode, 401);
     });
 
-    test('test if the middleware should not go through', () async {
+    test('when on error and the message is changed by the "unauthorizedMessage" the custom message should be sent instead of the default one', () async {
       var handler = const Pipeline()
         .addMiddleware(frontierMiddleware('Header', (req) async => req.headers, unauthorizedMessage: 'Custom Message!'))
         .addHandler((req) => Response.ok('ok!'));

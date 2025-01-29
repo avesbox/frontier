@@ -15,8 +15,11 @@ Middleware frontierMiddleware(
       if(value == null || value == false) {
         return Response.unauthorized(unauthorizedMessage);
       }
-      request.context['frontier.$strategy'] = value;
-      return await innerHandler.call(request);
+      return await innerHandler.call(request.change(
+        context: {
+          'frontier.$strategy': value
+        }
+      ));
     };
   };
 }
