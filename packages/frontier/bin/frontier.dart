@@ -9,7 +9,7 @@ final class HeaderOptions extends StrategyOptions {
       {required this.key, required this.value});
 }
 
-class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
+class HeaderStrategy extends Strategy<HeaderOptions> {
 
   HeaderStrategy(super.options, super.callback);
 
@@ -17,8 +17,8 @@ class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
   String get name => 'Header';
 
   @override
-  Future<void> authenticate(Map<String, dynamic> headers) async {
-    callback.call(options, headers[options.key] == options.value, done.complete);
+  Future<void> authenticate(StrategyRequest request) async {
+    callback.call(options, request.headers[options.key] == options.value, done.complete);
   }
 }
 
@@ -29,14 +29,14 @@ void main(List<String> arguments) {
             }));
   HttpServer.bind(InternetAddress.loopbackIPv4, 8080).then((server) {
     server.listen((HttpRequest request) {
-      final headers = <String, dynamic>{};
+      final headers = <String, String>{};
       request.headers.forEach((key, values) {
         headers[key] = values.join(',');
       });
       frontier
           .authenticate(
             'Header',
-              headers,
+              StrategyRequest(headers: headers),
           );
     });
   });

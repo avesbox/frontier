@@ -40,7 +40,7 @@ final class Credentials {
   int get hashCode => username.hashCode ^ password.hashCode;
 }
 
-class BasicAuthStrategy extends Strategy<BasicAuthOptions, Map<String, dynamic>> {
+class BasicAuthStrategy extends Strategy<BasicAuthOptions> {
 
   BasicAuthStrategy(super.options, super.callback);
 
@@ -48,12 +48,12 @@ class BasicAuthStrategy extends Strategy<BasicAuthOptions, Map<String, dynamic>>
   String get name => 'BasicAuthentication';
 
   @override
-  Future<void> authenticate(Map<String, dynamic> data) async {
+  Future<void> authenticate(StrategyRequest request) async {
     Credentials? credentials;
-    if(data.containsKey(options.header)) {
-      credentials = _decode(data[options.header]!);
-    } else if(data.containsKey(options.proxyHeader)) {
-      credentials = _decode(data[options.proxyHeader]!);
+    if(request.headers.containsKey(options.header)) {
+      credentials = _decode(request.headers[options.header]!);
+    } else if(request.headers.containsKey(options.proxyHeader)) {
+      credentials = _decode(request.headers[options.proxyHeader]!);
     }
     if(credentials != null) {
       callback.call(options, credentials, done.complete);

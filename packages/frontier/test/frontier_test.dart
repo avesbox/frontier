@@ -17,7 +17,7 @@ class HeaderResult {
   HeaderResult({required this.authenticated});
 }
 
-class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
+class HeaderStrategy extends Strategy<HeaderOptions> {
 
   HeaderStrategy(super.options, super.callback);
 
@@ -25,8 +25,8 @@ class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
   String get name => 'Header';
 
   @override
-  Future<void> authenticate(Map<String, dynamic> headers) async {
-    callback.call(options, headers[options.key] == options.value, done.complete);
+  Future<void> authenticate(StrategyRequest request) async {
+    callback.call(options, request.headers[options.key] == options.value, done.complete);
   }
   
 }
@@ -38,11 +38,11 @@ void main() {
       frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin'), (options, result, done) async {
           done(result);
         }));
-      final headers = <String, dynamic>{};
+      final headers = <String, String>{};
       headers['auth'] = 'admin';
       final value = await frontier.authenticate(
         'Header',
-        headers,
+        StrategyRequest(headers: headers),
       );
       expect(value, true);
     });
@@ -52,9 +52,9 @@ void main() {
       frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin'), (options, result, done) async {
         done(result);
       }));
-      final headers = <String, dynamic>{};
+      final headers = <String, String>{};
       headers['auth'] = 'user';
-      final authenticated = await frontier.authenticate('Header', headers);
+      final authenticated = await frontier.authenticate('Header', StrategyRequest(headers: headers));
       expect(authenticated, false);
     });
   });

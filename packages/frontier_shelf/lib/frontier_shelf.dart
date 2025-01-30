@@ -5,7 +5,7 @@ final frontier = Frontier();
 
 Middleware frontierMiddleware(
   String strategy,
-  Future<dynamic> Function(Request request) dataFromReq,
+  Future<StrategyRequest> Function(Request request) dataFromReq,
   { String unauthorizedMessage = 'The authentication failed!' }
 ) {
   return (Handler innerHandler) {

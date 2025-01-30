@@ -13,7 +13,7 @@ final class HeaderOptions extends StrategyOptions {
       {required this.key, required this.value});
 }
 
-class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
+class HeaderStrategy extends Strategy<HeaderOptions> {
 
   HeaderStrategy(super.options, super.callback);
 
@@ -21,8 +21,8 @@ class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
   String get name => 'Header';
 
   @override
-  Future<void> authenticate(Map<String, dynamic> headers) async {
-    final value = headers[options.key] == options.value;
+  Future<void> authenticate(StrategyRequest request) async {
+    final value = request.headers[options.key] == options.value;
     callback.call(options, value, done.complete);
   }
 }
@@ -36,7 +36,7 @@ void main() {
     });
     test('if the request contains the right header the request should go through and the context should be modified', () async {
       var handler = const Pipeline()
-        .addMiddleware(frontierMiddleware('Header', (req) async => req.headers))
+        .addMiddleware(frontierMiddleware('Header', (req) async => StrategyRequest(headers: req.headers)))
         .addHandler((req) => Response.ok('ok!', context: req.context));
 
       final response = await handler(Request(
@@ -53,7 +53,7 @@ void main() {
 
     test('if the request does not contain the right header the request should not go through with a 401 status code', () async {
       var handler = const Pipeline()
-        .addMiddleware(frontierMiddleware('Header', (req) async => req.headers))
+        .addMiddleware(frontierMiddleware('Header', (req) async => StrategyRequest(headers: req.headers)))
         .addHandler((req) => Response.ok('ok!'));
 
       final response = await handler(Request(
@@ -69,7 +69,7 @@ void main() {
 
     test('if the request does not contain the right header the request and custom message is passed the request should not go through with the custom message in the response.', () async {
       var handler = const Pipeline()
-        .addMiddleware(frontierMiddleware('Header', (req) async => req.headers, unauthorizedMessage: 'Custom Message!'))
+        .addMiddleware(frontierMiddleware('Header', (req) async => StrategyRequest(headers: req.headers), unauthorizedMessage: 'Custom Message!'))
         .addHandler((req) => Response.ok('ok!'));
 
       final response = await handler(Request(

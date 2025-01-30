@@ -5,7 +5,7 @@ import 'package:frontier_strategy/frontier_strategy.dart';
 
 import 'extract_jwt.dart';
 
-class JwtStrategy extends Strategy<JwtStrategyOptions, StrategyRequest> {
+class JwtStrategy extends Strategy<JwtStrategyOptions> {
 
   JwtStrategy(super.options, super.callback);
 
@@ -13,11 +13,7 @@ class JwtStrategy extends Strategy<JwtStrategyOptions, StrategyRequest> {
   String get name => 'jwt';
 
   @override
-  Future<void> authenticate(StrategyRequest? data) async {
-    if(data == null) {
-      done.complete(null);
-      return;
-    }
+  Future<void> authenticate(StrategyRequest data) async {
     try {
       final jwtString = options.jwtFromRequest(data);
       if(jwtString == null) {
