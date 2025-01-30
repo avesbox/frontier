@@ -13,10 +13,10 @@ Middleware frontierMiddleware(
       final data = await dataFromReq(request);
       final value = await frontier.authenticate(strategy, data);
       if(value == null || value == false) {
-        return Response.unauthorized(unauthorizedMessage);
+        return Response.unauthorized(unauthorizedMessage, context: request.context);
       }
-      request.context['frontier.$strategy'] = value;
-      return await innerHandler.call(request);
+      final changedRequest = request.change(context: { 'frontier.$strategy': value });
+      return await innerHandler.call(changedRequest);
     };
   };
 }
