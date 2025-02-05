@@ -22,7 +22,7 @@ const strategies = [
 				Strategies
 			</h1>
 		</header>
-		<main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto gap-4 w-full my-4 p-1">
+		<main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto gap-4 w-full my-4 p-1">
 			<a v-for="strategy in strategies"
                 :href="strategy.href"
 				class="rounded-lg transition-all flex grow border-2"
