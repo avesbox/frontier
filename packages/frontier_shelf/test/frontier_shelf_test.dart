@@ -13,7 +13,7 @@ final class HeaderOptions extends StrategyOptions {
       {required this.key, required this.value});
 }
 
-class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
+class HeaderStrategy extends Strategy<HeaderOptions> {
 
   HeaderStrategy(super.options, super.callback);
 
@@ -21,8 +21,8 @@ class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
   String get name => 'Header';
 
   @override
-  Future<void> authenticate(Map<String, dynamic> headers) async {
-    final value = headers[options.key] == options.value;
+  Future<void> authenticate(StrategyRequest request) async {
+    final value = request.headers[options.key] == options.value;
     callback.call(options, value, done.complete);
   }
 }
@@ -34,9 +34,9 @@ void main() {
         done(result);
       }));
     });
-    test('when the header value in the request is correct it should pass through the middleware', () async {
+    test('if the request contains the right header the request should go through and the context should be modified', () async {
       var handler = const Pipeline()
-        .addMiddleware(frontierMiddleware('Header', (req) async => req.headers))
+        .addMiddleware(frontierMiddleware('Header', (req) async => StrategyRequest(headers: req.headers)))
         .addHandler((req) => Response.ok('ok!', context: req.context));
       final req = Request(
         'get', 
@@ -48,11 +48,12 @@ void main() {
       final response = await handler(req);
       expect(response.context['frontier.Header'], equals(true));
       expect(response.statusCode, 200);
+      expect(response.context['frontier.Header'], true);
     });
 
-    test('when the header value in the request is not correct it should not pass through the middleware', () async {
+    test('if the request does not contain the right header the request should not go through with a 401 status code', () async {
       var handler = const Pipeline()
-        .addMiddleware(frontierMiddleware('Header', (req) async => req.headers))
+        .addMiddleware(frontierMiddleware('Header', (req) async => StrategyRequest(headers: req.headers)))
         .addHandler((req) => Response.ok('ok!'));
 
       final response = await handler(Request(
@@ -66,9 +67,9 @@ void main() {
       expect(response.statusCode, 401);
     });
 
-    test('when on error and the message is changed by the "unauthorizedMessage" the custom message should be sent instead of the default one', () async {
+    test('if the request does not contain the right header the request and custom message is passed the request should not go through with the custom message in the response.', () async {
       var handler = const Pipeline()
-        .addMiddleware(frontierMiddleware('Header', (req) async => req.headers, unauthorizedMessage: 'Custom Message!'))
+        .addMiddleware(frontierMiddleware('Header', (req) async => StrategyRequest(headers: req.headers), unauthorizedMessage: 'Custom Message!'))
         .addHandler((req) => Response.ok('ok!'));
 
       final response = await handler(Request(

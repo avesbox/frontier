@@ -22,7 +22,7 @@ class Frontier {
   Frontier();
 
   /// Define a strategy to be used. If a strategy is already defined, an exception is thrown.
-  void use<T extends StrategyOptions, I>(Strategy<T, I> strategy) {
+  void use<T extends StrategyOptions>(Strategy<T> strategy) {
     if (_strategy.containsKey(strategy.name)) {
       throw Exception('Strategy already defined');
     }
@@ -30,7 +30,7 @@ class Frontier {
   }
 
   /// Authenticate using the defined strategy. If no strategy is defined, an exception is thrown.
-  Future<dynamic> authenticate<T extends StrategyOptions, I>(String strategy, I input) async {
+  Future<dynamic> authenticate<T extends StrategyOptions>(String strategy, StrategyRequest input) async {
     if (!_strategy.containsKey(strategy)) {
       throw Exception('No strategy defined');
     }

@@ -1,25 +1,13 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
-layout: home
-
-hero:
-  name: "Frontier"
-  text: "Frontier is a simple, flexible and unobtrusive authentication library for Flutter & Dart."
-  tagline: My great project tagline
-  actions:
-    - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
-
-features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+layout: flexhome
+title: Frontier - Flutter & Dart Authentication library
+titleTemplate: false
+sidebar: false
 ---
 
+<script setup>
+  import Home from './components/Home.vue';
+</script>
+
+<Home />

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 /// Base class to extend for creating a new strategy
-abstract class Strategy<T extends StrategyOptions, I> {
+abstract class Strategy<T extends StrategyOptions> {
 
   final T options;
   final StrategyCallback<T, Object> callback;
@@ -17,7 +17,7 @@ abstract class Strategy<T extends StrategyOptions, I> {
   String get name;
 
   /// Authenticate the request
-  Future<void> authenticate(I data);
+  Future<void> authenticate(StrategyRequest data);
 }
 
 typedef StrategyCallback<T, I> = Future<void> Function(T strategyOptions, I? data, void Function(Object? result) done);

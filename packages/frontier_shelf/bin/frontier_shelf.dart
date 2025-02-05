@@ -11,7 +11,7 @@ final class HeaderOptions extends StrategyOptions {
       {required this.key, required this.value});
 }
 
-class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
+class HeaderStrategy extends Strategy<HeaderOptions> {
 
   HeaderStrategy(super.options, super.callback);
 
@@ -19,8 +19,8 @@ class HeaderStrategy extends Strategy<HeaderOptions, Map<String, dynamic>> {
   String get name => 'Header';
 
   @override
-  Future<void> authenticate(Map<String, dynamic> headers) async {
-    final value = headers[options.key] == options.value;
+  Future<void> authenticate(StrategyRequest request) async {
+    final value = request.headers[options.key] == options.value;
     callback.call(options, value, done.complete);
   }
 }
@@ -30,7 +30,7 @@ void main(List<String> arguments) async {
     done(result);
   }));
   var handler = const Pipeline()
-            .addMiddleware(frontier_shelf.frontierMiddleware('Header', (req) async => req.headers))
+            .addMiddleware(frontier_shelf.frontierMiddleware('Header', (req) async => StrategyRequest(headers: req.headers)))
             .addHandler((req) => Response.ok('ok!'));
 
     await serve(handler, '0.0.0.0', 3000);

@@ -5,7 +5,7 @@ final frontier = Frontier();
 
 Middleware frontierMiddleware(
   String strategy,
-  Future<dynamic> Function(Request request) dataFromReq,
+  Future<StrategyRequest> Function(Request request) dataFromReq,
   { String unauthorizedMessage = 'The authentication failed!' }
 ) {
   return (Handler innerHandler) {
@@ -13,13 +13,10 @@ Middleware frontierMiddleware(
       final data = await dataFromReq(request);
       final value = await frontier.authenticate(strategy, data);
       if(value == null || value == false) {
-        return Response.unauthorized(unauthorizedMessage);
+        return Response.unauthorized(unauthorizedMessage, context: request.context);
       }
-      return await innerHandler.call(request.change(
-        context: {
-          'frontier.$strategy': value
-        }
-      ));
+      final changedRequest = request.change(context: { 'frontier.$strategy': value });
+      return await innerHandler.call(changedRequest);
     };
   };
 }

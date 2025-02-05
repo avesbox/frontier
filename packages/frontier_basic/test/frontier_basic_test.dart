@@ -1,4 +1,5 @@
 import 'package:frontier_basic/frontier_basic.dart';
+import 'package:frontier_strategy/frontier_strategy.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -9,7 +10,7 @@ void main() {
       done(credentials);
     });
     expect(strategy.name, 'BasicAuthentication');
-    strategy.authenticate({'Authorization': 'dGVzdDp0ZXN0'});
+    strategy.authenticate(StrategyRequest(headers: {'Authorization': 'dGVzdDp0ZXN0'}));
     final result = await strategy.done.future;
     expect(result, equals(credentials));
   });

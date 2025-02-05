@@ -1,0 +1,125 @@
+/**
+ * Customize default theme styling by overriding CSS variables:
+ * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
+ */
+
+/**
+ * Colors
+ * -------------------------------------------------------------------------- */
+ @tailwind base;
+ @tailwind components;
+ @tailwind utilities;
+ 
+
+:root {
+	--vp-c-brand-1: #5E72A7;
+	--vp-c-brand-1-light: #7A8BB8; /* 20% lighter */
+	--vp-c-brand-1-lighter: #96A4C9; /* 40% lighter */
+	--vp-c-brand-1-lightest: #B2BDDA; /* 60% lighter */
+	--vp-c-brand-1-dark: #4B5A85; /* 20% darker */
+	--vp-c-brand-1-darker: #384263; /* 40% darker */
+	--vp-c-brand-dimm: rgba(255, 87, 34, 0.08);
+	--vp-home-hero-name-background: var(--vp-c-brand-1) !important;
+	--vp-c-bg: #efebe6;
+}
+
+/**
+   * Component: Button
+   * -------------------------------------------------------------------------- */
+
+:root {
+	--vp-button-brand-border: var(--vp-c-brand-light);
+	--vp-button-brand-text: var(--vp-c-white);
+	--vp-button-brand-bg: var(--vp-c-brand-1);
+	--vp-button-brand-hover-border: var(--vp-c-brand-light);
+	--vp-button-brand-hover-text: var(--vp-c-white);
+	--vp-button-brand-hover-bg: var(--vp-c-brand-light);
+	--vp-button-brand-active-border: var(--vp-c-brand-light);
+	--vp-button-brand-active-text: var(--vp-c-white);
+	--vp-button-brand-active-bg: var(--vp-button-brand-bg);
+}
+
+/**
+   * Component: Home
+   * -------------------------------------------------------------------------- */
+
+@media (min-width: 640px) {
+	:root {
+		--vp-home-hero-image-filter: blur(56px);
+	}
+}
+
+@media (min-width: 960px) {
+	:root {
+		--vp-home-hero-image-filter: blur(72px);
+	}
+}
+
+/**
+   * Component: Custom Block
+   * -------------------------------------------------------------------------- */
+
+:root {
+	--vp-custom-block-tip-border: var(--vp-c-brand);
+	--vp-custom-block-tip-text: var(--vp-c-brand-darker);
+	--vp-custom-block-tip-bg: var(--vp-c-brand-dimm);
+}
+
+.dark {
+	--vp-custom-block-tip-border: var(--vp-c-brand);
+	--vp-custom-block-tip-text: var(--vp-c-brand-lightest);
+	--vp-custom-block-tip-bg: var(--vp-c-brand-dimm);
+}
+
+/**
+   * Component: Algolia
+   * -------------------------------------------------------------------------- */
+
+.DocSearch {
+	--docsearch-primary-color: var(--vp-c-brand) !important;
+}
+
+.logo {
+	height: 64px !important;
+}
+.image-container {
+	position: relative;
+	width: 320px;
+	height: 320px;
+}
+.image-container > img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	max-width: 320px;
+	max-height: 320px;
+	transform: translate(-50%,-50%);
+}
+.image-bg {
+	background-image: linear-gradient(-45deg, rgba(255, 152, 0, 0.6) 50%, rgba(245, 124, 0, 0.6) 50%) !important;
+	background-image: -moz-linear-gradient(-45deg, rgba(255, 152, 0, 0.6) 50%, rgba(245, 124, 0, 0.6) 50%) !important;
+	background-image: -webkit-linear-gradient(-45deg, rgba(255, 152, 0, 0.6) 50%, rgba(245, 124, 0, 0.6) 50%) !important;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border-radius: 50%;
+	width: 320px;
+	height: 320px;
+	filter: var(--vp-home-hero-image-filter);
+	transform: translate(-50%,-50%);
+}
+.vp-btn-custom, .vp-doc a.vp-btn-custom{
+	background-color: var(--vp-c-brand-2);
+	color: rgb(23,23,23);
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+	text-decoration: none;
+	border-radius: 20px;
+}
+.vp-btn-custom:hover, .vp-doc a.vp-btn-custom:hover {
+	color: rgb(23,23,23);
+}
+
+html {
+	scroll-behavior: smooth;
+}
