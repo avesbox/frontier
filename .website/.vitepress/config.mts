@@ -27,7 +27,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Docs', link: '/docs/' },
-      { text: 'Strategies', link: '/strategies/'}
+      { text: 'Strategies', link: '/strategies'}
     ],
 
     sidebar: [

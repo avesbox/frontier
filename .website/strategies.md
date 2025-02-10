@@ -6,7 +6,7 @@ search: false
 ---
 
 <script setup>
-    import Strategies from '../components/Strategies.vue';
+    import Strategies from './components/Strategies.vue';
 </script>
 
 <Strategies />
