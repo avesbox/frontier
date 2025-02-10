@@ -11,13 +11,21 @@ abstract class Strategy<T extends StrategyOptions> {
     this.callback,
   );
 
-  Completer done = Completer<Object?>();
+  Completer _callback = Completer<Object?>();
+
+  Future<Object?> get future => _callback.future;
+
+  void Function(Object? result) get done => _callback.complete;
+
+  void reset() {
+    _callback = Completer<Object?>();
+  }
 
   /// Name of the strategy
   String get name;
 
   /// Authenticate the request
-  Future<void> authenticate(StrategyRequest data);
+  Future<void> authenticate(StrategyRequest request);
 }
 
 typedef StrategyCallback<T, I> = Future<void> Function(T strategyOptions, I? data, void Function(Object? result) done);

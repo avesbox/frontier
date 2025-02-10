@@ -56,10 +56,10 @@ class BasicAuthStrategy extends Strategy<BasicAuthOptions> {
       credentials = _decode(request.headers[options.proxyHeader]!);
     }
     if(credentials != null) {
-      callback.call(options, credentials, done.complete);
+      callback.call(options, credentials, done);
       return;
     }
-    done.complete(credentials);
+    done(credentials);
   }
 
   Credentials? _decode(String value) {

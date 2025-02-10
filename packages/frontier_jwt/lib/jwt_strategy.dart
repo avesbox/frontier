@@ -13,12 +13,11 @@ class JwtStrategy extends Strategy<JwtStrategyOptions> {
   String get name => 'jwt';
 
   @override
-  Future<void> authenticate(StrategyRequest data) async {
+  Future<void> authenticate(StrategyRequest request) async {
     try {
-      final jwtString = options.jwtFromRequest(data);
+      final jwtString = options.jwtFromRequest(request);
       if(jwtString == null) {
-        done.complete(null);
-        return;
+        return done(null);
       }
       final jwt = JWT.verify(
         jwtString, 
@@ -32,9 +31,9 @@ class JwtStrategy extends Strategy<JwtStrategyOptions> {
         jwtId: options.jwtId,
         issueAt: options.issueAt
       );
-      callback.call(options, jwt, done.complete);
+      callback.call(options, jwt, done);
     } catch(e) {
-      done.complete(e);
+      done(e);
     }
   }
 

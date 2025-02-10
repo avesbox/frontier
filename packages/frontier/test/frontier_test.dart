@@ -26,7 +26,7 @@ class HeaderStrategy extends Strategy<HeaderOptions> {
 
   @override
   Future<void> authenticate(StrategyRequest request) async {
-    callback.call(options, request.headers[options.key] == options.value, done.complete);
+    callback.call(options, request.headers[options.key] == options.value, done);
   }
   
 }

@@ -27,7 +27,7 @@ void main() {
           'Authorization': 'Bearer $token'
         })
       );
-      final jwt = await strategy.done.future;
+      final jwt = await strategy.future;
       expect(jwt, isA<JWT>());
     });
 
@@ -44,7 +44,7 @@ void main() {
           'Authorization': 'Bearer $token'
         })
       );
-      final result = await strategy.done.future;
+      final result = await strategy.future;
       expect(result, isA<JWTException>());
     });
 

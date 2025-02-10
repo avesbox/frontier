@@ -1,13 +1,13 @@
 <script setup>
 const strategies = [
     {
-        title: 'Basic Strategy',
+        title: 'frontier_basic',
         description: 'Frontier strategy for authenticating with a username and password.',
         featured: true,
         href: ''
     }, 
     {
-        title: 'JWT Strategy',
+        title: 'frontier_jwt',
         description: 'Frontier strategy for authenticating with a JSON Web Token.',
         featured: true,
         href: ''
@@ -29,9 +29,9 @@ const strategies = [
                 style="border-color: var(--vp-c-brand-1-dark)"
 				:key="strategy.title + strategy.href">
 				<div class="flex flex-col gap-4 p-4">
-					<h3 class="text-xl">{{ strategy.title }}</h3>
+					<h3 class="text-md uppercase font-bold" style="color: var(--vp-c-brand-1-darker)">{{ strategy.title }}</h3>
                     <p class="my-0 text-sm">{{ strategy.description }}</p>
-                    <p class="justify-self-end self-end font-medium uppercase" style="color: var(--vp-c-brand-1)" v-if="strategy.featured">Featured</p>
+                    <p class="justify-self-end self-end font-medium text-sm uppercase" style="color: var(--vp-c-brand-1)" v-if="strategy.featured">Featured</p>
 				</div>
 			</a>
 		</main>

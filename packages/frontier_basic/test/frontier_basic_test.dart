@@ -11,7 +11,7 @@ void main() {
     });
     expect(strategy.name, 'BasicAuthentication');
     strategy.authenticate(StrategyRequest(headers: {'Authorization': 'dGVzdDp0ZXN0'}));
-    final result = await strategy.done.future;
+    final result = await strategy.future;
     expect(result, equals(credentials));
   });
 }
