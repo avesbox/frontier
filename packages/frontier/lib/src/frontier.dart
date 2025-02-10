@@ -38,6 +38,6 @@ class Frontier {
     final s = _strategies[strategy];
     s?.reset();
     await s?.authenticate(input);
-    return s?.done;
+    return s?.future;
   }
 }
