@@ -45,7 +45,7 @@ export default defineConfig({
             link: 'create-a-strategy',
           },
           {
-            text: 'Integrations with Frontier',
+            text: 'Integrations',
             link: 'integrations'
           }
         ]
