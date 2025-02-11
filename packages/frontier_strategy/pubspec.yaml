@@ -1,6 +1,6 @@
 name: frontier_strategy
 description: Utility package to create strategies usable by the Frontier package.
-version: 0.0.2
+version: 1.0.0
 repository: https://github.com/avesbox/frontier
 topics: 
   - authentication
