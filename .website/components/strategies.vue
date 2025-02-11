@@ -4,13 +4,19 @@ const strategies = [
         title: 'frontier_basic',
         description: 'Frontier strategy for authenticating with a username and password.',
         featured: true,
-        href: ''
+        href: 'https://pub.dev/packages/frontier_basic'
     }, 
     {
         title: 'frontier_jwt',
         description: 'Frontier strategy for authenticating with a JSON Web Token.',
         featured: true,
-        href: ''
+        href: 'https://pub.dev/packages/frontier_jwt'
+    },
+    {
+        title: 'frontier_openid',
+        description: 'Frontier strategy for authenticating with OpenID',
+        featured: true,
+        href: 'https://pub.dev/packages/frontier_openid'
     },
 ]
 </script>

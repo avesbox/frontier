@@ -4,7 +4,7 @@
 
 Frontier OpenID is the strategy that provides OpenID Connect authentication for Frontier.
 
-[Get Started](https://frontier.avesbox.com/jwt.html) | [Pub.dev](https://pub.dev/packages/frontier_basic)
+[Get Started](https://frontier.avesbox.com/openid.html) | [Pub.dev](https://pub.dev/packages/frontier_openid)
 
 ## Why Frontier OpenID?
 
@@ -24,18 +24,18 @@ dart pub add frontier_openid
 import 'dart:io';
 
 import 'package:frontier/frontier.dart';
-import 'package:frontier_jwt/frontier_jwt.dart';
+import 'package:frontier_openid/frontier_openid.dart';
 
 void main() {
   final frontier = Frontier();
 
-  frontier.use(JwtStrategy(
-    JwtStrategyOptions(
-      SecretKey('secret'),
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  frontier.use(OpenIdStrategy(
+    OpenIdStrategyOptions(
+      issuer: Issuer.google,
+      clientId: 'client-id',
     ),
-    (options, jwt, done) async {
-      done(jwt != null);
+    (options, result, done) async {
+      done((result as OpenIdResponse).userInfo.name != null);
     },
   ));
 
@@ -48,7 +48,7 @@ void main() {
         headers[key] = values.join(',');
       });
       final result = await frontier.authenticate(
-        'OpenIdAuthentication',
+        'jwt',
         StrategyRequest(headers: headers),
       );
       if (result) {
