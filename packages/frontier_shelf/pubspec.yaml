@@ -1,6 +1,8 @@
 name: frontier_shelf
-description: A sample command-line application.
+description: A Shelf adapter for Frontier. It allows you to use Frontier with Shelf.
 version: 1.0.0
+repository: https://github.com/avesbox/frontier
+homepage: https://frontier.avesbox.com
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -8,7 +10,7 @@ environment:
 
 dependencies:
   shelf: ^1.4.0
-  frontier: ^0.0.1
+  frontier: ^1.0.0
 
 dev_dependencies:
   lints: ^5.0.0
