@@ -65,4 +65,4 @@ void main() {
 
 ## License
 
-Frontier Basic is released under the MIT License. See [LICENSE](
+Frontier Basic is released under the MIT License. See [LICENSE](https://github.com/avesbox/frontier/blob/main/LICENSE)
