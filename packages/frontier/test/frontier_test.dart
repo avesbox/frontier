@@ -7,8 +7,7 @@ final class HeaderOptions extends StrategyOptions {
   final String key;
   final String value;
 
-  HeaderOptions(
-      {required this.key, required this.value});
+  HeaderOptions({required this.key, required this.value});
 }
 
 class HeaderResult {
@@ -18,7 +17,6 @@ class HeaderResult {
 }
 
 class HeaderStrategy extends Strategy<HeaderOptions> {
-
   HeaderStrategy(super.options, super.callback);
 
   @override
@@ -28,16 +26,16 @@ class HeaderStrategy extends Strategy<HeaderOptions> {
   Future<void> authenticate(StrategyRequest request) async {
     callback.call(options, request.headers[options.key] == options.value, done);
   }
-  
 }
 
 void main() {
   group('$Frontier', () {
     test('should authenticate with HeaderStrategy', () async {
       final frontier = Frontier();
-      frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin'), (options, result, done) async {
-          done(result);
-        }));
+      frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin'),
+          (options, result, done) async {
+        done(result);
+      }));
       final headers = <String, String>{};
       headers['auth'] = 'admin';
       final value = await frontier.authenticate(
@@ -49,12 +47,14 @@ void main() {
 
     test('should not authenticate with HeaderStrategy', () async {
       final frontier = Frontier();
-      frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin'), (options, result, done) async {
+      frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin'),
+          (options, result, done) async {
         done(result);
       }));
       final headers = <String, String>{};
       headers['auth'] = 'user';
-      final authenticated = await frontier.authenticate('Header', StrategyRequest(headers: headers));
+      final authenticated = await frontier.authenticate(
+          'Header', StrategyRequest(headers: headers));
       expect(authenticated, false);
     });
   });

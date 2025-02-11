@@ -1,5 +1,6 @@
-import 'package:frontier/frontier.dart';
 import 'dart:io';
+
+import 'package:frontier/frontier.dart';
 
 final class HeaderOptions extends StrategyOptions {
   final String key;
@@ -20,22 +21,32 @@ class HeaderStrategy extends Strategy<HeaderOptions> {
   }
 }
 
-void main(List<String> arguments) {
-  Frontier frontier = Frontier();
+void main() {
+  final frontier = Frontier();
+
   frontier.use(HeaderStrategy(HeaderOptions(key: 'auth', value: 'admin'),
       (options, result, done) async {
     done(result);
   }));
-  HttpServer.bind(InternetAddress.loopbackIPv4, 8080).then((server) {
-    server.listen((HttpRequest request) {
+
+  final server = HttpServer.bind(InternetAddress.loopbackIPv4, 8080);
+
+  server.then((server) {
+    server.listen((HttpRequest request) async {
       final headers = <String, String>{};
       request.headers.forEach((key, values) {
         headers[key] = values.join(',');
       });
-      frontier.authenticate(
+      final result = await frontier.authenticate(
         'Header',
         StrategyRequest(headers: headers),
       );
+      if (result) {
+        request.response.write('Authenticated');
+      } else {
+        request.response.statusCode = HttpStatus.unauthorized;
+        request.response.write('Not Authenticated');
+      }
     });
   });
 }

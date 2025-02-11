@@ -3,18 +3,18 @@ import 'dart:async';
 import 'package:frontier_strategy/frontier_strategy.dart';
 
 /// The main class of the library. It is used to define and use strategies.
-/// 
+///
 /// ```dart
 /// final frontier = Frontier();
-/// 
+///
 /// frontier.use<GoogleStrategyOptions, User>(GoogleStrategy());
-/// 
+///
 /// final user = await frontier.authenticate<GoogleStrategyOptions, User>(GoogleStrategyOptions());
-/// 
+///
 /// print(user);
-/// 
+///
 /// ```
-/// 
+///
 class Frontier {
   final Map<String, Strategy> _strategies = {};
 
@@ -31,7 +31,8 @@ class Frontier {
   }
 
   /// Authenticate using the defined strategy. If no strategy is defined, an exception is thrown.
-  Future<dynamic> authenticate<T extends StrategyOptions>(String strategy, StrategyRequest input) async {
+  Future<dynamic> authenticate<T extends StrategyOptions>(
+      String strategy, StrategyRequest input) async {
     if (!_strategies.containsKey(strategy)) {
       throw ArgumentError('No strategy defined with the name $strategy');
     }
