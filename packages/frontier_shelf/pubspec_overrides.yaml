@@ -1,6 +1,6 @@
 # melos_managed_dependency_overrides: frontier,frontier_strategy
 dependency_overrides:
   frontier:
-    path: ..\\frontier
+    path: ../frontier
   frontier_strategy:
-    path: ..\\frontier_strategy
+    path: ../frontier_strategy

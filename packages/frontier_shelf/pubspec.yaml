@@ -1,6 +1,6 @@
 name: frontier_shelf
 description: A Shelf adapter for Frontier. It allows you to use Frontier with Shelf.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/avesbox/frontier
 homepage: https://frontier.avesbox.com
 topics: 
