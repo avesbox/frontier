@@ -2,7 +2,7 @@
 
 # Frontier JWT
 
-Frontier JWT is the strategy that provides email/password authentication for Frontier.
+Frontier JWT is the strategy that provides Bearer JWT Token authentication for Frontier.
 
 [Get Started](https://frontier.avesbox.com/jwt.html) | [Pub.dev](https://pub.dev/packages/frontier_basic)
 

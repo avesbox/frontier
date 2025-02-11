@@ -1,7 +1,8 @@
 name: frontier_jwt
-description: Strategy for Frontier that uses JWT for authentication.
-version: 1.0.0
+description: A Strategy for Frontier that uses JWT for authentication and authorization.
+version: 1.0.1
 repository: https://github.com/avesbox/frontier
+homepage: https://frontier.avesbox.com
 topics: 
   - authentication
   - authorization

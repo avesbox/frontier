@@ -1,5 +1,3 @@
-library frontier_jwt;
-
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:frontier_strategy/frontier_strategy.dart';
 
