@@ -2,6 +2,7 @@ name: frontier_basic
 description: Strategy for Frontier that uses basic authentication.
 version: 1.0.0
 repository: https://github.com/avesbox/frontier
+homepage: https://frontier.avesbox.com
 topics: 
   - authentication
   - authorization

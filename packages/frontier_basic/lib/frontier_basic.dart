@@ -16,6 +16,7 @@ final class BasicAuthOptions extends StrategyOptions {
   /// By default this is set to 'Proxy-Authorization', but can be changed
   final String proxyHeader;
 
+  /// Creates a new BasicAuthOptions
   BasicAuthOptions(
     {
       this.header = 'Authorization',
@@ -25,10 +26,15 @@ final class BasicAuthOptions extends StrategyOptions {
 
 }
 
+/// The credentials gotten from the header
 final class Credentials {
+  /// The username
   final String username;
+
+  /// The password
   final String password;
 
+  /// Creates a new Credentials
   Credentials({required this.username, required this.password});
 
   @override
@@ -40,8 +46,10 @@ final class Credentials {
   int get hashCode => username.hashCode ^ password.hashCode;
 }
 
+/// The strategy for basic authentication
 class BasicAuthStrategy extends Strategy<BasicAuthOptions> {
 
+  /// Creates a new BasicAuthStrategy
   BasicAuthStrategy(super.options, super.callback);
 
   @override
