@@ -5,7 +5,7 @@ Frontier provides first and third party integrations to your favorite backend fr
 Currently Frontier has an integration with the following backend frameworks:
 
 - [Shelf](https://pub.dev/packages/frontier_shelf)
-- [Serinus](https://pub.dev/packages/frontier_serinus)
+- [Serinus](https://pub.dev/packages/serinus_frontier)
 
 If you have a request for a new integration, please [open an issue](
 https://github.com/avesbox/frontier/)
